@@ -1,0 +1,15 @@
+{
+    "python.formatting.provider": "autopep8",
+    "cSpell.words": [
+        "anyio",
+        "autoflush",
+        "dotenv",
+        "fastapi",
+        "httpx",
+        "ondelete",
+        "passlib",
+        "pydantic",
+        "sessionmaker",
+        "sqlalchemy"
+    ]
+}

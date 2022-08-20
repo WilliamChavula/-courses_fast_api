@@ -1,0 +1,92 @@
+[
+    {
+        "id": "b9177b51-0362-4074-bcac-eb772910958b",
+        "first_name": "Ammamaria",
+        "last_name": "Teck",
+        "email": "ateck0@angelfire.com",
+        "job_title": "Actuary",
+        "is_super_user": "true",
+        "password": "NSIxpi"
+    },
+    {
+        "id": "a0a60942-431a-4291-8aec-9ad34967b7ed",
+        "first_name": "Donal",
+        "last_name": "Newall",
+        "email": "dnewall1@loc.gov",
+        "job_title": "Graphic Designer",
+        "is_super_user": "true",
+        "password": "pF9FtnxJjyUf"
+    },
+    {
+        "id": "20cba386-3451-477c-9874-c5e8ec090f46",
+        "first_name": "Lionello",
+        "last_name": "Rivard",
+        "email": "lrivard2@opensource.org",
+        "job_title": "Quality Engineer",
+        "is_super_user": "true",
+        "password": "W7tBav8iD7Dr"
+    },
+    {
+        "id": "4c0456e5-5e4d-45a4-a83b-aa4236bd4eb5",
+        "first_name": "Lynne",
+        "last_name": "Courvert",
+        "email": "lcourvert3@ebay.com",
+        "job_title": "Account Executive",
+        "is_super_user": "true",
+        "password": "PeO9S48B"
+    },
+    {
+        "id": "de34a4dd-a40f-46ae-be48-c1a89078bc14",
+        "first_name": "Anne-corinne",
+        "last_name": "Cheale",
+        "email": "acheale4@alexa.com",
+        "job_title": "VP Marketing",
+        "is_super_user": "true",
+        "password": "4z46bUu6n"
+    },
+    {
+        "id": "70e97b6f-757d-47fb-8b51-93d5a5f292c6",
+        "first_name": "Amby",
+        "last_name": "Gaishson",
+        "email": "agaishson5@yale.edu",
+        "job_title": "Project Manager",
+        "is_super_user": "true",
+        "password": "TYoHvPyeVqN"
+    },
+    {
+        "id": "bf48a795-5465-4218-8d16-fdfb4cfe281f",
+        "first_name": "Matilda",
+        "last_name": "Filippello",
+        "email": "mfilippello6@gnu.org",
+        "job_title": "Project Manager",
+        "is_super_user": "true",
+        "password": "N2WbHt0z7u"
+    },
+    {
+        "id": "3c3d8d37-5bfd-4f76-932e-d174e71bf055",
+        "first_name": "Leann",
+        "last_name": "Swinburne",
+        "email": "lswinburne7@sciencedirect.com",
+        "job_title": "Quality Control Specialist",
+        "is_super_user": "true",
+        "password": "Kjh3wDaL"
+    },
+    {
+        "id": "ae559dd7-5b2a-4dc8-9461-563bb357bc29",
+        "first_name": "Betta",
+        "last_name": "Chadburn",
+        "email": "bchadburn8@state.gov",
+        "job_title": "Internal Auditor",
+        "is_super_user": "true",
+        "password": "eHbrkVvISpX"
+    },
+    {
+        "id": "7e33ee43-fd33-4018-b279-82935a341323",
+        "first_name": "Ravid",
+        "last_name": "Watman",
+        "email": "rwatman9@vimeo.com",
+        "job_title": "Assistant Professor",
+        "is_super_user": "true",
+        "password": "KcLkiokKk"
+    }
+]

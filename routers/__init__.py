@@ -1,0 +1,5 @@
+
+from .courses_routes import courses_router
+from .subject_routes import subject_router
+from .modules_routes import module_router
+from .users_routes import user_router

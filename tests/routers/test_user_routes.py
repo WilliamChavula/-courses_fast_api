@@ -1,5 +1,3 @@
-# cSpell: ignore usefixtures pytestmark
-
 from typing import Dict
 
 import pytest
@@ -22,7 +20,7 @@ def user_payload_generator() -> Dict[str, str]:
         "email": fake.email(),
         "job_title": fake.job(),
         "is_super_user": "false",
-        "password": fake.password()
+        "password": fake.password(),
     }
 
 
@@ -36,7 +34,7 @@ class TestAsyncUserRoutes:
             res = await client.post(
                 "/register",
                 headers={"Content-type": "application/json; charset=utf-8"},
-                json=user_payload_generator()
+                json=user_payload_generator(),
             )
 
         assert res.status_code == 201
@@ -47,7 +45,8 @@ class TestAsyncUserRoutes:
             res = await client.post(
                 "/",
                 headers={"Content-type": "application/json; charset=utf-8"},
-                json=user_payload_generator())
+                json=user_payload_generator(),
+            )
 
         assert res.status_code == 401
 
@@ -59,7 +58,7 @@ class TestAsyncUserRoutes:
             res = await client.post(
                 "/create_many",
                 headers={"Content-type": "application/json; charset=utf-8"},
-                json=users_payload
+                json=users_payload,
             )
 
         assert res.status_code == 401
@@ -71,7 +70,7 @@ class TestAsyncUserRoutes:
             res = await client.post(
                 "/",
                 headers={"Content-type": "application/json; charset=utf-8"},
-                json=user_payload_generator()
+                json=user_payload_generator(),
             )
 
         assert res.status_code == 201
@@ -85,7 +84,7 @@ class TestAsyncUserRoutes:
             res = await client.post(
                 "/create_many",
                 headers={"Content-type": "application/json; charset=utf-8"},
-                json=users_payload
+                json=users_payload,
             )
 
         assert res.status_code == 201
@@ -95,19 +94,19 @@ class TestSyncUserRoutes:
     from pytest_mock import MockerFixture
 
     def test_login_no_user(self, test_client, faker, mocker: MockerFixture):
-        payload = {
-            "username": faker.email(),
-            "password": faker.password()
-        }
+        payload = {"username": faker.email(), "password": faker.password()}
 
         mock_get_user_by_email = mocker.patch(
-            "routers.users_routes.get_user_by_email", return_value=None, autospec=True)
+            "routers.users_routes.get_user_by_email", return_value=None, autospec=True
+        )
 
         res = test_client.post(
             "/user/login",
-            headers={"Content-Type": "application/x-www-form-urlencoded",
-                     "accept": 'application/json'},
-            data=payload
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+                "accept": "application/json",
+            },
+            data=payload,
         )
 
         mock_get_user_by_email.assert_called_once()
@@ -115,21 +114,23 @@ class TestSyncUserRoutes:
         assert res.status_code == 404
         assert res.json()["detail"] == "Invalid Credentials"
 
-    def test_login_user_wrong_password(self, test_client, faker, create_user_instance, mocker: MockerFixture):
+    def test_login_user_wrong_password(
+        self, test_client, faker, create_user_instance, mocker: MockerFixture
+    ):
         user_ = create_user_instance
 
-        payload = {
-            "username": user_.email,
-            "password": faker.password()
-        }
+        payload = {"username": user_.email, "password": faker.password()}
         mock_get_user_by_email = mocker.patch(
-            "routers.users_routes.get_user_by_email", return_value=user_)
+            "routers.users_routes.get_user_by_email", return_value=user_
+        )
 
         res = test_client.post(
             "/user/login",
-            headers={"Content-Type": "application/x-www-form-urlencoded",
-                     "accept": 'application/json'},
-            data=payload
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+                "accept": "application/json",
+            },
+            data=payload,
         )
 
         mock_get_user_by_email.assert_called_once()
@@ -137,23 +138,25 @@ class TestSyncUserRoutes:
         assert res.status_code == 400
         assert res.json()["detail"] == "Invalid Credentials"
 
-    def test_login_valid_user(self, test_client, create_user_instance, mocker: MockerFixture):
+    def test_login_valid_user(
+        self, test_client, create_user_instance, mocker: MockerFixture
+    ):
         user_ = create_user_instance
 
         #  cSpell: ignore kPrzJ20IllmN
-        payload = {
-            "username": user_.email,
-            "password": "kPrzJ20IllmN"
-        }
+        payload = {"username": user_.email, "password": "kPrzJ20IllmN"}
 
         mock_get_user_by_email = mocker.patch(
-            "routers.users_routes.get_user_by_email", return_value=user_)
+            "routers.users_routes.get_user_by_email", return_value=user_
+        )
 
         res = test_client.post(
             "/user/login",
-            headers={"Content-Type": "application/x-www-form-urlencoded",
-                     "accept": 'application/json'},
-            data=payload
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+                "accept": "application/json",
+            },
+            data=payload,
         )
 
         mock_get_user_by_email.assert_called_once()
@@ -166,12 +169,10 @@ class TestSyncUserRoutes:
         users_ = [create_user_instance for _ in range(3)]
 
         mock_get_all_users = mocker.patch(
-            "routers.users_routes.get_all_users", return_value=users_)
-
-        res = test_client.get(
-            "/user/",
-            headers={"Content-Type": "application/json"}
+            "routers.users_routes.get_all_users", return_value=users_
         )
+
+        res = test_client.get("/user/", headers={"Content-Type": "application/json"})
 
         mock_get_all_users.assert_called_once()
 
@@ -187,12 +188,10 @@ class TestSyncUserRoutes:
         )
 
         res = test_client.get(
-            f"/user/{user_.id}",
-            headers={"Content-Type": "application/json"}
+            f"/user/{user_.id}", headers={"Content-Type": "application/json"}
         )
 
-        mock_get_user_by_id.assert_called_once_with(
-            db=mocker.ANY, user_id=user_.id)
+        mock_get_user_by_id.assert_called_once_with(db=mocker.ANY, user_id=user_.id)
 
         assert res.status_code == 200
 
@@ -200,12 +199,12 @@ class TestSyncUserRoutes:
         _id: str = faker.uuid4()
 
         mock_get_user_by_id = mocker.patch(
-            "routers.users_routes.get_user_by_id",
-            return_value=None
+            "routers.users_routes.get_user_by_id", return_value=None
         )
 
         res = test_client.get(
-            f"/user/{_id}", headers={"Content-Type": "application/json"})
+            f"/user/{_id}", headers={"Content-Type": "application/json"}
+        )
 
         mock_get_user_by_id.assert_called_once_with(db=mocker.ANY, user_id=_id)
 

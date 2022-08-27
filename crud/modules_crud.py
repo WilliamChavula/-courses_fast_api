@@ -16,13 +16,11 @@ async def db_create_module(db: Session, mod: ModuleBase):
 
 
 def db_read_all_modules(db: Session, limit: int) -> List[ModuleModel]:
-    return db.scalars(
-        select(ModuleModel)
-    ).fetchmany(size=limit)
+    return db.scalars(select(ModuleModel)).fetchmany(size=limit)
 
 
 def db_read_module_by_id(db: Session, module_id: str) -> Union[ModuleModel, None]:
-    module, = db.execute(
+    (module,) = db.execute(
         select(ModuleModel).where(ModuleModel.id == module_id)
     ).one_or_none()
 
@@ -30,11 +28,9 @@ def db_read_module_by_id(db: Session, module_id: str) -> Union[ModuleModel, None
 
 
 async def db_update_module(
-    db: Session, module_id: str,  content: UpdateModuleBase
+    db: Session, module_id: str, content: UpdateModuleBase
 ) -> Union[ModuleModel, None]:
-    module = db.scalar(
-        select(ModuleModel).where(ModuleModel.id == module_id)
-    )
+    module = db.scalar(select(ModuleModel).where(ModuleModel.id == module_id))
 
     if module is None:
         return
@@ -48,6 +44,7 @@ async def db_update_module(
 
 
 # DELETE QUERIES
+
 
 async def delete_module_by_id(db: Session, module_id: str) -> Union[None, ModuleModel]:
     module: ModuleModel = (

@@ -37,6 +37,7 @@ pytest-mock = "*"
 [dev-packages]
 pytest = "*"
 requests = "*"
+black = "*"
 
 [requires]
 python_version = "3.9"

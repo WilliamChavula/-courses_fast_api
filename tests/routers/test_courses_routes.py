@@ -6,8 +6,6 @@ from auth.authenticate import create_access_token
 
 from tests.conf_test_db import app
 
-# cSpell: ignore pytestmark usefixtures
-
 
 @pytest.mark.usefixtures("anyio_backend")
 class TestAsyncCourseRoutes:
@@ -34,25 +32,26 @@ class TestAsyncCourseRoutes:
     async def test_create_course_with_no_token(self, course_schema_fixture):
 
         async with AsyncClient(app=app, base_url="http://localhost/courses") as ac:
-            res = await ac.post('/course', json=course_schema_fixture.json())
+            res = await ac.post("/course", json=course_schema_fixture.json())
         assert res.status_code == 401
 
-    async def test_create_course(self, mocker: MockerFixture, create_super_user_instance, course_schema_fixture):
+    async def test_create_course(
+        self, mocker: MockerFixture, create_super_user_instance, course_schema_fixture
+    ):
 
         user_ = create_super_user_instance
 
         mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email",
-            return_value=user_
+            "utils.dependencies.get_user_by_email", return_value=user_
         )
 
         token_ = create_access_token(data={"user": user_.email})
 
         async with AsyncClient(app=app, base_url="http://localhost/courses") as ac:
             res = await ac.post(
-                '/course',
-                headers={'Authorization': f'Bearer {token_}'},
-                content=course_schema_fixture.json()
+                "/course",
+                headers={"Authorization": f"Bearer {token_}"},
+                content=course_schema_fixture.json(),
             )
 
         mock_get_user_by_email.assert_called_once()
@@ -60,22 +59,23 @@ class TestAsyncCourseRoutes:
         assert res.json()["id"] is not None
         assert res.json()["owner"] == course_schema_fixture.owner
 
-    async def test_create_course_not_super_user(self, mocker, create_user_instance, course_schema_fixture):
+    async def test_create_course_not_super_user(
+        self, mocker, create_user_instance, course_schema_fixture
+    ):
 
         user_ = create_user_instance
 
         mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email",
-            return_value=user_
+            "utils.dependencies.get_user_by_email", return_value=user_
         )
 
         token_ = create_access_token(data={"user": user_.email})
 
         async with AsyncClient(app=app, base_url="http://localhost/courses") as ac:
             res = await ac.post(
-                '/course',
-                headers={'Authorization': f'Bearer {token_}'},
-                content=course_schema_fixture.json()
+                "/course",
+                headers={"Authorization": f"Bearer {token_}"},
+                content=course_schema_fixture.json(),
             )
 
         mock_get_user_by_email.assert_called_once()
@@ -83,30 +83,32 @@ class TestAsyncCourseRoutes:
 
 
 class TestSyncCourseRoutes:
-
-    def test_update_course_not_super_user(self, mocker, create_user_instance, create_course_fixture, test_client):
+    def test_update_course_not_super_user(
+        self, mocker, create_user_instance, create_course_fixture, test_client
+    ):
 
         original_course = create_course_fixture
         user_ = create_user_instance
 
         mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email",
-            return_value=user_
+            "utils.dependencies.get_user_by_email", return_value=user_
         )
 
         token_ = create_access_token(data={"user": user_.email})
 
         res = test_client.put(
             f"/courses/{original_course.id}/",
-            headers={'Authorization': f'Bearer {token_}'},
-            data={"title": "Updated title"}
+            headers={"Authorization": f"Bearer {token_}"},
+            data={"title": "Updated title"},
         )
 
         mock_get_user_by_email.assert_called_once()
         assert res.status_code == 403
 
     @pytest.mark.usefixtures("authenticated_user")
-    def test_update_course_super_user(self, create_super_user_instance, create_course_fixture, test_client):
+    def test_update_course_super_user(
+        self, create_super_user_instance, create_course_fixture, test_client
+    ):
 
         original_course = create_course_fixture
         user_ = create_super_user_instance
@@ -115,16 +117,20 @@ class TestSyncCourseRoutes:
 
         res = test_client.put(
             f"/courses/{original_course.id}/",
-            headers={'Authorization': f'Bearer {token_}',
-                     "Content-type": "application/json"},
-            json={"title": "Updated title"}
+            headers={
+                "Authorization": f"Bearer {token_}",
+                "Content-type": "application/json",
+            },
+            json={"title": "Updated title"},
         )
 
         assert res.status_code == 202
         assert res.json()["title"] == "Updated title"
 
     @pytest.mark.usefixtures("authenticated_user")
-    def test_delete_course_super_user(self, create_super_user_instance, create_course_fixture, test_client):
+    def test_delete_course_super_user(
+        self, create_super_user_instance, create_course_fixture, test_client
+    ):
 
         original_course = create_course_fixture
         user_ = create_super_user_instance
@@ -133,9 +139,11 @@ class TestSyncCourseRoutes:
 
         res = test_client.delete(
             f"/courses/{original_course.id}/",
-            headers={'Authorization': f'Bearer {token_}',
-                     "Content-type": "application/json"},
-            json={"title": "Updated title"}
+            headers={
+                "Authorization": f"Bearer {token_}",
+                "Content-type": "application/json",
+            },
+            json={"title": "Updated title"},
         )
 
         assert res.status_code == 204

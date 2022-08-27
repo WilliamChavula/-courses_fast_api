@@ -33,14 +33,21 @@ class TestAsyncUserRoutes:
     async def test_register_user(self):
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
-            res = await client.post("/register", headers={"Content-type": "application/json; charset=utf-8"}, json=user_payload_generator())
+            res = await client.post(
+                "/register",
+                headers={"Content-type": "application/json; charset=utf-8"},
+                json=user_payload_generator()
+            )
 
         assert res.status_code == 201
 
     async def test_unauthenticated_create_user(self):
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
-            res = await client.post("/", headers={"Content-type": "application/json; charset=utf-8"}, json=user_payload_generator())
+            res = await client.post(
+                "/",
+                headers={"Content-type": "application/json; charset=utf-8"},
+                json=user_payload_generator())
 
         assert res.status_code == 401
 
@@ -49,7 +56,11 @@ class TestAsyncUserRoutes:
         users_payload = [user_payload_generator() for _ in range(3)]
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
-            res = await client.post("/create_many", headers={"Content-type": "application/json; charset=utf-8"}, json=users_payload)
+            res = await client.post(
+                "/create_many",
+                headers={"Content-type": "application/json; charset=utf-8"},
+                json=users_payload
+            )
 
         assert res.status_code == 401
 
@@ -57,7 +68,11 @@ class TestAsyncUserRoutes:
     async def test_authenticated_create_user(self):
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
-            res = await client.post("/", headers={"Content-type": "application/json; charset=utf-8"}, json=user_payload_generator())
+            res = await client.post(
+                "/",
+                headers={"Content-type": "application/json; charset=utf-8"},
+                json=user_payload_generator()
+            )
 
         assert res.status_code == 201
 
@@ -67,7 +82,11 @@ class TestAsyncUserRoutes:
         users_payload = [user_payload_generator() for _ in range(3)]
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
-            res = await client.post("/create_many", headers={"Content-type": "application/json; charset=utf-8"}, json=users_payload)
+            res = await client.post(
+                "/create_many",
+                headers={"Content-type": "application/json; charset=utf-8"},
+                json=users_payload
+            )
 
         assert res.status_code == 201
 
@@ -178,7 +197,7 @@ class TestSyncUserRoutes:
         assert res.status_code == 200
 
     def test_get_non_existent_user(self, test_client, mocker: MockerFixture, faker):
-        id: str = faker.uuid4()
+        _id: str = faker.uuid4()
 
         mock_get_user_by_id = mocker.patch(
             "routers.users_routes.get_user_by_id",
@@ -186,8 +205,8 @@ class TestSyncUserRoutes:
         )
 
         res = test_client.get(
-            f"/user/{id}", headers={"Content-Type": "application/json"})
+            f"/user/{_id}", headers={"Content-Type": "application/json"})
 
-        mock_get_user_by_id.assert_called_once_with(db=mocker.ANY, user_id=id)
+        mock_get_user_by_id.assert_called_once_with(db=mocker.ANY, user_id=_id)
 
         assert res.status_code == 404

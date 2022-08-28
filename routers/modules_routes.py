@@ -53,10 +53,10 @@ def get_module_by_id(module_id: str, db: Session = Depends(get_db)):
     response_model=ModuleResponse,
     dependencies=[Depends(verify_super_user)],
 )
-def create_module(module: ModuleBase, db: Session = Depends(get_db)):
+async def create_module(module: ModuleBase, db: Session = Depends(get_db)):
 
-    db_create_module(db, module)
-    return module
+    created = await db_create_module(db, module)
+    return created
 
 
 @module_router.put(
@@ -83,7 +83,7 @@ async def update_module(
 
 
 @module_router.delete(
-    "/{module_id}/",
+    "/{module_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(verify_super_user)],
 )

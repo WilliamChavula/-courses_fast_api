@@ -13,7 +13,8 @@ from schemas.auth_schemas import TokenData
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 jwt_provider: JWTProvider = JoseJWTProvider(
-    algorithm=Settings.ALGORITHM, secret_key=Settings.SECRET_KEY)
+    algorithm=Settings.ALGORITHM, secret_key=Settings.SECRET_KEY
+)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
@@ -21,7 +22,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=Settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.utcnow() + timedelta(
+            minutes=Settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        )
     to_encode.update({"exp": expire})
     encoded_jwt = jwt_provider.encode(payload=to_encode)
     return encoded_jwt

@@ -22,6 +22,7 @@ class CourseModel(Base):
 
     def __repr__(self) -> str:
         return (
-            f"<CourseModel id={self.id}, owner={self.owner}, title={self.title}, slug={self.slug}, overview={self.overview}, "
-            f"module_id={self.module_id}, subject_id={self.subject_id}, created={self.created}>"
+            f"<CourseModel id={self.id}, owner={self.owner}, title={self.title}, slug={self.slug}, "
+            f"overview={self.overview}, module_id={self.module_id}, subject_id={self.subject_id}, "
+            f"created={self.created}>"
         )

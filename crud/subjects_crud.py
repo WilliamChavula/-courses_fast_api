@@ -16,27 +16,21 @@ async def db_create_subject(db: Session, sub: SubjectBase):
 
 
 def db_read_all_subjects(db: Session, limit: int) -> List[SubjectModel]:
-    subjects = db.scalars(
-        select(SubjectModel)
-    ).fetchmany(size=limit)
+    subjects = db.scalars(select(SubjectModel)).fetchmany(size=limit)
 
     return subjects
 
 
 def db_read_subject_by_id(db: Session, subject_id: str) -> Union[SubjectModel, None]:
-    subject = db.scalar(
-        select(SubjectModel).where(SubjectModel.id == subject_id)
-    )
+    subject = db.scalar(select(SubjectModel).where(SubjectModel.id == subject_id))
 
     return subject
 
 
 async def db_update_subject(
-    db: Session, subject_id: str,  content: UpdateSubjectBase
+    db: Session, subject_id: str, content: UpdateSubjectBase
 ) -> Union[SubjectModel, None]:
-    subject = db.scalar(
-        select(SubjectModel).where(SubjectModel.id == subject_id)
-    )
+    subject = db.scalar(select(SubjectModel).where(SubjectModel.id == subject_id))
 
     if subject is None:
         return
@@ -51,10 +45,12 @@ async def db_update_subject(
 
 # DELETE QUERIES
 
-async def delete_subject_by_id(db: Session, subject_id: str) -> Union[None, SubjectModel]:
+
+async def delete_subject_by_id(
+    db: Session, subject_id: str
+) -> Union[None, SubjectModel]:
     subject: SubjectModel = (
-        db.query(SubjectModel).filter(
-            SubjectModel.id == subject_id).one_or_none()
+        db.query(SubjectModel).filter(SubjectModel.id == subject_id).one_or_none()
     )
 
     if subject is None:

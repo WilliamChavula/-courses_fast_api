@@ -13,7 +13,10 @@ class ModuleModel(Base):
     description = Column(String, nullable=False)
 
     course = relationship(
-        "CourseModel", back_populates="module", cascade="all, delete",)
+        "CourseModel",
+        back_populates="module",
+        cascade="all, delete",
+    )
 
     def __repr__(self):
         return f"<ModuleModel id={self.id}, title={self.title}, description={self.description}, course={self.course}>"

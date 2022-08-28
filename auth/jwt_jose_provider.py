@@ -11,13 +11,11 @@ class JoseJWTProvider(JWTProvider):
         self.secret_key = secret_key
 
     def encode(self, payload: Dict[str, Any]) -> str:
-        return jwt.encode(
-            payload, self.secret_key, algorithm=self.algorithm)
+        return jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
 
     def decode(self, token: str) -> Dict[str, Any]:
         try:
-            return jwt.decode(token, self.secret_key,
-                              algorithms=[self.algorithm])
+            return jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
 
         except JWTError:
             raise InvalidCredentialsException()

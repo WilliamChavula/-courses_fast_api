@@ -11,9 +11,8 @@ from crud.subjects_crud import (
     db_read_subject_by_id,
     db_update_subject,
     db_create_subject,
-    delete_subject_by_id
+    delete_subject_by_id,
 )
-from schemas.auth_schemas import TokenData
 from schemas.subject_schemas import SubjectBase
 from utils import Tags, get_db, verify_super_user
 
@@ -51,12 +50,11 @@ def get_subject(subject_id: str, db: Session = Depends(get_db)):
     "/subject",
     status_code=status.HTTP_201_CREATED,
     response_model=SubjectResponse,
-    dependencies=[Depends(verify_super_user)]
+    dependencies=[Depends(verify_super_user)],
 )
 async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
 
-    await db_create_subject(db, subject)
-    return subject
+    return await db_create_subject(db, subject)
 
 
 @subject_router.put(
@@ -66,10 +64,13 @@ async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
     dependencies=[Depends(verify_super_user)],
     tags=[Tags.subjects],
 )
-async def update_subject(*, db: Session = Depends(get_db), subject_id: str, content: UpdateSubjectBase):
+async def update_subject(
+    *, db: Session = Depends(get_db), subject_id: str, content: UpdateSubjectBase
+):
 
     subject: Union[SubjectModel, None] = await db_update_subject(
-        db, subject_id, content)
+        db, subject_id, content
+    )
 
     if subject is None:
         raise HTTPException(
@@ -81,16 +82,18 @@ async def update_subject(*, db: Session = Depends(get_db), subject_id: str, cont
 
 
 @subject_router.delete(
-    "/{subject_id}/",
+    "/{subject_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(verify_super_user)]
+    dependencies=[Depends(verify_super_user)],
 )
 async def delete_module(subject_id: str, db: Session = Depends(get_db)):
 
-    deleted_subject = await delete_subject_by_id(db, subject_id)
+    subject = db_read_subject_by_id(db, subject_id)
 
-    if deleted_subject is None:
+    if subject is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Could not find subject with ID: {subject_id}",
         )
+
+    await delete_subject_by_id(db, subject_id)

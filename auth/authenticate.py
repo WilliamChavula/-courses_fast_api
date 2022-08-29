@@ -5,14 +5,14 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 from auth.jwt_jose_provider import JoseJWTProvider
-from auth.jwt_provider import JWTProvider
+from auth.jwt_provider import JWTProtocol
 from core.exceptions import InvalidCredentialsException
 from core.settings import Settings
 from schemas.auth_schemas import TokenData
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
-jwt_provider: JWTProvider = JoseJWTProvider(
+jwt_provider: JWTProtocol = JoseJWTProvider(
     algorithm=Settings.ALGORITHM, secret_key=Settings.SECRET_KEY
 )
 

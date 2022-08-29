@@ -1,11 +1,11 @@
 from typing import Dict, Any
 from jose import jwt, JWTError
 
-from auth.jwt_provider import JWTProvider
+from auth.jwt_provider import JWTProtocol
 from core.exceptions import InvalidCredentialsException
 
 
-class JoseJWTProvider(JWTProvider):
+class JoseJWTProvider(JWTProtocol):
     def __init__(self, algorithm: str, secret_key: str) -> None:
         self.algorithm = algorithm
         self.secret_key = secret_key

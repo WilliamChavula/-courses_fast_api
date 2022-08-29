@@ -45,7 +45,7 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     status_code=status.HTTP_201_CREATED,
     response_model=List[UserResponse],
     summary="Create users by passing a json Array of user objects",
-    dependencies=[Depends(verify_super_user)]
+    dependencies=[Depends(verify_super_user)],
 )
 async def create_users(users: List[UserCreate], db: Session = Depends(get_db)):
     res: List[UserModel] = await db_insert_many(db, users)
@@ -57,7 +57,10 @@ async def create_users(users: List[UserCreate], db: Session = Depends(get_db)):
     status_code=status.HTTP_200_OK,
     response_model=List[UserResponse],
 )
-def get_users(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=100, description="Number of records to fetch")):
+def get_users(
+    db: Session = Depends(get_db),
+    limit: int = Query(10, gt=0, le=100, description="Number of records to fetch"),
+):
     users = get_all_users(db, limit)
 
     return users
@@ -70,8 +73,7 @@ def get_users(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=100
 )
 def get_user(user_id: str, db: Session = Depends(get_db)):
 
-    user: Union[None, UserResponse] = get_user_by_id(
-        db=db, user_id=user_id)
+    user: Union[None, UserResponse] = get_user_by_id(db=db, user_id=user_id)
 
     if user is None:
         raise HTTPException(
@@ -82,25 +84,30 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     return user
 
 
-@user_router.post('/login', status_code=status.HTTP_200_OK, response_model=Token)
-def login(request: OAuth2PasswordRequestForm = Depends(), database: Session = Depends(get_db)) -> Token:
+@user_router.post("/login", status_code=status.HTTP_200_OK, response_model=Token)
+def login(
+    request: OAuth2PasswordRequestForm = Depends(), database: Session = Depends(get_db)
+) -> Token:
     user: Union[UserModel, None] = get_user_by_email(
-        db=database, email_address=request.username)
+        db=database, email_address=request.username
+    )
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail='Invalid Credentials')
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials"
+        )
 
     if not verify_password(request.password, user.password):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid Credentials')
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Credentials"
+        )
 
     access_token = create_access_token(data={"user": user.email})
 
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@user_router.post('/register', status_code=status.HTTP_201_CREATED)
+@user_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register_user(request: UserCreate, database: Session = Depends(get_db)):
 
     user = get_user_by_email(database, request.email)

@@ -6,10 +6,8 @@ from models import CourseModel, ModuleModel, SubjectModel
 from schemas import CourseBase, UpdateCourseBase
 
 
-## READ QUERIES ##
-
-
 def get_all_courses(db: Session, limit: int) -> List[CourseModel]:
+    # noinspection PyTypeChecker
     return (
         db.query(CourseModel)
         .join(SubjectModel, CourseModel.subject_id == SubjectModel.id)
@@ -19,7 +17,7 @@ def get_all_courses(db: Session, limit: int) -> List[CourseModel]:
 
 
 def get_course_by_id(db: Session, course_id: str) -> Union[None, CourseModel]:
-    course: CourseModel = (
+    course: Union[CourseModel, None] = (
         db.query(CourseModel)
         .join(CourseModel.module)
         .join(CourseModel.subject)
@@ -33,13 +31,22 @@ def get_course_by_id(db: Session, course_id: str) -> Union[None, CourseModel]:
     return course
 
 
-## CREATE QUERIES ##
-
-
 async def db_create_course(db: Session, course: CourseBase) -> CourseModel:
+
+    module = ModuleModel(title=course.module.title, description=course.module.description)
+    db.add(module)
+    db.commit()
+    db.refresh(module)
+
+    subject = SubjectModel(title=course.subject.title, slug=course.subject.slug)
+    db.add(subject)
+    db.commit()
+    db.refresh(subject)
+
+    # noinspection PyArgumentList
     course_item = CourseModel(
-        module=ModuleModel(**course.module.dict()),
-        subject=SubjectModel(**course.subject.dict()),
+        module=module,
+        subject=subject,
         owner=course.owner,
         title=course.title,
         slug=course.slug,
@@ -50,13 +57,15 @@ async def db_create_course(db: Session, course: CourseBase) -> CourseModel:
     db.add(course_item)
     db.commit()
     db.refresh(course_item)
+
     return course_item
 
 
 async def db_insert_many(db: Session, courses: List[CourseBase]) -> List[CourseModel]:
+    # noinspection PyArgumentList
     courses_ = [CourseModel(
-        module=ModuleModel(**course.module.dict()),
-        subject=SubjectModel(**course.subject.dict()),
+        module=ModuleModel(**course.module.model_dump()),
+        subject=SubjectModel(**course.subject.model_dump()),
         owner=course.owner,
         title=course.title,
         slug=course.slug,
@@ -69,25 +78,21 @@ async def db_insert_many(db: Session, courses: List[CourseBase]) -> List[CourseM
     return courses_
 
 
-# UPDATE QUERIES
-
-
 def update_course_by_id(
-    db: Session,
-    course_id: str,
-    body: UpdateCourseBase,
-) -> Union[None, CourseModel]:
-
-    course: CourseModel = (
+        db: Session,
+        course_id: str,
+        body: UpdateCourseBase,
+) -> Union[CourseModel, None]:
+    course: Union[CourseModel, None] = (
         db.query(CourseModel).filter(CourseModel.id == course_id).one_or_none()
     )
 
     if course is None:
         return None
 
-    update_data = body.dict(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(course, key, value)
+    update_data = body.model_dump(exclude_unset=True)
+
+    db.query(CourseModel).filter(CourseModel.id == course_id).update(update_data)
 
     db.commit()
     db.refresh(course)
@@ -95,10 +100,8 @@ def update_course_by_id(
     return course
 
 
-# DELETE QUERIES
-
 def delete_course_by_id(db: Session, course_id: str) -> Union[None, CourseModel]:
-    course: CourseModel = (
+    course: Union[CourseModel, None] = (
         db.query(CourseModel).filter(CourseModel.id == course_id).one_or_none()
     )
 

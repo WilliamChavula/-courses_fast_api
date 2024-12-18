@@ -20,7 +20,7 @@ subject_router = APIRouter(prefix="/subjects", tags=[Tags.subjects])
 
 
 @subject_router.get(
-    "/",
+    "",
     status_code=status.HTTP_200_OK,
     response_model=List[SubjectResponse],
     tags=[Tags.subjects],
@@ -47,7 +47,7 @@ def get_subject(subject_id: str, db: Session = Depends(get_db)):
 
 
 @subject_router.post(
-    "/subject",
+    "",
     status_code=status.HTTP_201_CREATED,
     response_model=SubjectResponse,
     dependencies=[Depends(verify_super_user)],

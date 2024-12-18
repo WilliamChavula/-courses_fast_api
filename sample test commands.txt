@@ -1,0 +1,37 @@
+docker compose exec api pytest --cov=routers/ --cov-branch  --cov-report=html tests/swe_project/test_cfg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest --cov=utils/ --cov-branch  --cov-report=html tests/swe_project/test_cfg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+ termshot --show-cmd -- docker compose exec api pytest --cov=utils/ --cov-branch  --cov-report=html tests/swe_project/test_cfg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+
+ termshot --show-cmd --filename "fsm-test.png" -- docker compose exec api pytest --cov=auth/ --cov-branch  --cov-report=html tests/swe_project/test_fsm.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+
+ termshot --show-cmd --filename "pt-test.png" -- docker compose exec api pytest tests/swe_project/test_pt.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+termshot --show-cmd --filename "bt-test.png" -- docker compose exec api pytest tests/swe_project/test_bt.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+
+docker compose exec api pytest tests/swe_project/test_ddg.py::TestDDG::test_update_with_incorrect_uuid_returns_404 -W ignore::DeprecationWarning -W ignore::UserWarning
+
+termshot --show-cmd --filename "ddg-test.png" -- docker compose exec api pytest tests/swe_project/test_ddg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+termshot --show-cmd --filename "fsm-test.png" -- docker compose exec api pytest tests/swe_project/test_fsm.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest --cov=routers/ --cov-branch  --cov-report=html tests/swe_project/test_ddg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest --cov=utils/ --cov-branch  --cov-report=html tests/swe_project/test_ddg.py -W ignore::DeprecationWarning -W ignore::UserWarning
+
+
+docker compose exec api pytest tests/swe_project/test_pt.py::TestPartitionBasedTesting::test_get_subjects -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest tests/swe_project/test_ddg.py::TestDDG -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest tests/swe_project/test_fsm.py::TestFSMTesting::test_get_user_by_email_db_query_state_visited -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest tests/swe_project/test_fsm.py::TestFSMTesting::test_verify_password_state_visited -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest tests/swe_project/test_fsm.py::TestFSMTesting::test_create_access_token_state_visited -W ignore::DeprecationWarning -W ignore::UserWarning
+
+docker compose exec api pytest tests/swe_project/test_fsm.py::TestFSMTesting::test_create_encode_payload_state_visited -W ignore::DeprecationWarning -W ignore::UserWarning

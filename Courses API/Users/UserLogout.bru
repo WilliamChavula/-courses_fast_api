@@ -1,0 +1,31 @@
+meta {
+  name: UserLogout
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{BASE_URL}}/user/logout
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Bearer: 
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYnN0b29wMkBtYXNoYWJsZS5jb20iLCJleHAiOjE3MzA2ODIxODR9.ytbvHIw099OQaG5V5RKwbcg9XtORyMWZ4xXbjRhcxPA
+}
+
+body:json {
+  {
+    "username": "jplait1@usda.gov",
+    "password": "WzOhkqo"
+  }
+}
+
+body:form-urlencoded {
+  username: bstoop2@mashable.com
+  password: rdpK37533T
+}

@@ -1,0 +1,27 @@
+meta {
+  name: UserRegister
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{BASE_URL}}/user/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "first_name": "Berny",
+    "last_name": "Stoop",
+    "email": "bstoop2@mashable.com",
+    "job_title": "Social Worker",
+    "is_super_user": false,
+    "password": "rdpK37533T"
+  }
+}
+
+body:form-urlencoded {
+  username: abc
+  password: abc
+}

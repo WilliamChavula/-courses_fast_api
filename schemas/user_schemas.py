@@ -1,4 +1,3 @@
-from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field
 from typing import Union
@@ -17,8 +16,7 @@ class BaseUser(BaseModel):
 
 
 class UserCreate(BaseUser):
-    id: str = Field(..., min_length=30)
-    password: str = Field(..., min_length=6)
+    password: str = Field(..., min_length=6, max_length=30)
 
     class Config:
         validate_assignment = True

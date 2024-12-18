@@ -28,11 +28,12 @@ def anyio_backend():
 
 @pytest.fixture(scope="module")
 def test_client():
+    from utils import get_db
+
+    # noinspection PyUnresolvedReferences
+    app.dependency_overrides[get_db] = override_get_db
     client = TestClient(app)
     yield client
-
-
-# cSpell: ignore autouse
 
 
 @pytest.fixture(autouse=True)
@@ -40,14 +41,16 @@ def faker_seed():
     return randint(101, 500)
 
 
+# noinspection PyUnresolvedReferences
 @pytest.fixture
 def authenticated_user(create_super_user_instance):
-    from utils import get_db
+
     from auth.authenticate import create_access_token, get_current_user
     from utils.dependencies import verify_super_user
 
     user_ = create_super_user_instance
 
+    from utils import get_db
     from tests.conf_test_db import override_get_db
 
     token_ = create_access_token(data={"user": user_.email})
@@ -122,15 +125,26 @@ def create_module_fixture(faker):
 def create_course_fixture(faker, create_module_fixture, create_subject_fixture):
     database = next(override_get_db())
 
+    new_module = create_module_fixture
+    database.add(new_module)
+    database.commit()
+    database.refresh(new_module)
+
+    new_subject = create_subject_fixture
+    database.add(new_subject)
+    database.commit()
+    database.refresh(new_subject)
+
+    # noinspection PyArgumentList
     new_course = CourseModel(
         id=str(uuid4()),
-        module=create_module_fixture,
-        subject=create_subject_fixture,
+        module=new_module,
+        subject=new_subject,
         owner=f"{faker.prefix()} {faker.name()}",
         title=faker.sentence(nb_words=6),
         slug=faker.sentence(nb_words=10),
         overview=faker.sentence(nb_words=70),
-        created=datetime.utcnow(),
+        created=datetime.now(),
     )
 
     database.add(new_course)
@@ -157,13 +171,13 @@ def create_course_json_fixture(faker):
         "subject": {
             "id": str(uuid4()),
             "title": f"{faker.sentence(nb_words=6)}",
-            "description": f"{faker.slug(nb_words=10)}",
+            "description": f"{faker.sentence(nb_words=10)}",
         },
         "owner": f"{faker.prefix()} {faker.name()}",
         "title": faker.sentence(nb_words=6),
-        "slug": faker.sentence(nb_words=10),
+        "slug": faker.slug(),
         "overview": faker.sentence(nb_words=70),
-        "created": datetime.utcnow(),
+        "created": datetime.now(),
     }
 
     database.add(new_course)
@@ -176,9 +190,6 @@ def create_course_json_fixture(faker):
     database.commit()
 
 
-# cSpell: ignore kPrzJ20IllmN
-
-
 @pytest.fixture
 def create_user_instance(faker):
     user = UserModel(
@@ -189,7 +200,7 @@ def create_user_instance(faker):
         job_title=faker.job(),
         password=get_password_hash("kPrzJ20IllmN"),
         is_super_user=False,
-        created_at=datetime.utcnow(),
+        created_at=datetime.now(),
     )
 
     return user
@@ -205,7 +216,7 @@ def create_super_user_instance(faker):
         job_title=faker.job(),
         password=get_password_hash("kPrzJ20IllmN"),
         is_super_user=True,
-        created_at=datetime.utcnow(),
+        created_at=datetime.now(),
     )
 
     return super_user

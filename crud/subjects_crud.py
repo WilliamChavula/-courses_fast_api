@@ -7,7 +7,7 @@ from schemas import SubjectBase, UpdateSubjectBase
 
 
 async def db_create_subject(db: Session, sub: SubjectBase):
-    subject_item = SubjectModel(**sub.dict())
+    subject_item = SubjectModel(**sub.model_dump())
     db.add(subject_item)
     db.commit()
     db.refresh(subject_item)

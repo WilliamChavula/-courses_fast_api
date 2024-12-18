@@ -21,6 +21,13 @@ def verify_super_user(db: Session = Depends(get_db), current_user: TokenData = D
     user: UserModel = get_user_by_email(
         db, email_address=current_user.email)
 
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have the right permissions",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
     if not user.is_super_user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

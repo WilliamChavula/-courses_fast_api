@@ -1,0 +1,27 @@
+meta {
+  name: UserLogin
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{BASE_URL}}/user
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYnN0b29wMkBtYXNoYWJsZS5jb20iLCJleHAiOjE3MzA2Nzg5MDV9.DuCxOEucb0oo555MceBKbUFS7kALsLbA30CZM7m71-s
+}
+
+body:json {
+  {
+    "username": "jplait1@usda.gov",
+    "password": "WzOhkqo"
+  }
+}
+
+body:form-urlencoded {
+  username: bstoop2@mashable.com
+  password: rdpK37533T
+}

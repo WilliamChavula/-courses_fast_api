@@ -18,7 +18,7 @@ module_router = APIRouter(prefix="/modules", tags=[Tags.modules])
 
 
 @module_router.get(
-    "/",
+    "",
     status_code=status.HTTP_200_OK,
     response_model=List[ModuleResponse],
     tags=[Tags.modules],
@@ -48,7 +48,7 @@ def get_module_by_id(module_id: str, db: Session = Depends(get_db)):
 
 
 @module_router.post(
-    "/module",
+    "",
     status_code=status.HTTP_201_CREATED,
     response_model=ModuleResponse,
     dependencies=[Depends(verify_super_user)],

@@ -1,5 +1,5 @@
 import asyncio
-from typing import Union, List
+from typing import Union, List, Sequence
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -12,7 +12,6 @@ from schemas.user_schemas import UserCreate
 
 async def _create_user_helper(user: UserCreate) -> UserModel:
     return UserModel(
-        id=user.id,
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
@@ -53,7 +52,7 @@ async def user_registration(request: UserCreate, database) -> UserModel:
 # READ QUERIES #
 
 
-def get_all_users(db: Session, limit: int) -> List[UserModel]:
+def get_all_users(db: Session, limit: int) -> Sequence[UserModel]:
     return db.scalars(select(UserModel)).fetchmany(size=limit)
 
 

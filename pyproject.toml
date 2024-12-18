@@ -1,0 +1,80 @@
+[tool.poetry]
+name = "courses-fast-api"
+version = "0.1.0"
+description = ""
+authors = ["William Chavula <rumbani@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+alembic = {version = "1.13.3", markers = "python_version >= \"3.8\""}
+annotated-types = {version = "0.7.0", markers = "python_version >= \"3.8\""}
+anyio = {version = "4.6.2.post1", markers = "python_version >= \"3.9\""}
+bcrypt = {version = "4.2.0", markers = "python_version >= \"3.7\""}
+certifi = {version = "2024.8.30", markers = "python_version >= \"3.6\""}
+charset-normalizer = {version = "3.4.0", markers = "python_full_version >= \"3.7.0\""}
+click = {version = "8.1.7", markers = "python_version >= \"3.7\""}
+dnspython = {version = "2.7.0", markers = "python_version >= \"3.9\""}
+ecdsa = {version = "0.19.0", markers = "python_version >= \"2.6\" and python_version not in \"3.0, 3.1, 3.2, 3.3, 3.4\""}
+email-validator = {version = "2.2.0", markers = "python_version >= \"3.8\""}
+exceptiongroup = {version = "1.2.2", markers = "python_version >= \"3.7\""}
+fastapi = {version = "0.115.4", markers = "python_version >= \"3.8\""}
+fastapi-cli = {version = "0.0.5", markers = "python_version >= \"3.8\""}
+h11 = {version = "0.14.0", markers = "python_version >= \"3.7\""}
+httpcore = {version = "1.0.6", markers = "python_version >= \"3.8\""}
+httptools = {version = "0.6.4", markers = "python_full_version >= \"3.8.0\""}
+httpx = {version = "0.27.2", markers = "python_version >= \"3.8\""}
+idna = {version = "3.10", markers = "python_version >= \"3.6\""}
+iniconfig = {version = "2.0.0", markers = "python_version >= \"3.7\""}
+jinja2 = {version = "3.1.4", markers = "python_version >= \"3.7\""}
+mako = {version = "1.3.6", markers = "python_version >= \"3.8\""}
+markdown-it-py = {version = "3.0.0", markers = "python_version >= \"3.8\""}
+markupsafe = {version = "3.0.2", markers = "python_version >= \"3.9\""}
+mdurl = {version = "0.1.2", markers = "python_version >= \"3.7\""}
+mypy-extensions = {version = "1.0.0", markers = "python_version >= \"3.5\""}
+packaging = {version = "24.1", markers = "python_version >= \"3.8\""}
+passlib = "1.7.4"
+pathspec = {version = "0.12.1", markers = "python_version >= \"3.8\""}
+platformdirs = {version = "4.3.6", markers = "python_version >= \"3.8\""}
+pluggy = {version = "1.5.0", markers = "python_version >= \"3.8\""}
+psycopg2 = {version = "2.9.10", markers = "python_version >= \"3.8\""}
+pyasn1 = {version = "0.6.1", markers = "python_version >= \"3.8\""}
+pydantic = {version = "2.9.2", markers = "python_version >= \"3.8\""}
+pydantic-core = {version = "2.23.4", markers = "python_version >= \"3.8\""}
+pygments = {version = "2.18.0", markers = "python_version >= \"3.8\""}
+pytest-html = {version = "4.1.1", markers = "python_version >= \"3.8\""}
+pytest-metadata = {version = "3.1.1", markers = "python_version >= \"3.8\""}
+python-dateutil = {version = "2.9.0.post0", markers = "python_version >= \"2.7\" and python_version not in \"3.0, 3.1, 3.2\""}
+python-dotenv = {version = "1.0.1", markers = "python_version >= \"3.8\""}
+python-jose = "3.3.0"
+python-multipart = {version = "0.0.17", markers = "python_version >= \"3.8\""}
+pyyaml = {version = "6.0.2", markers = "python_version >= \"3.8\""}
+requests = {version = "2.32.3", markers = "python_version >= \"3.8\""}
+rich = {version = "13.9.4", markers = "python_full_version >= \"3.8.0\""}
+rsa = {version = "4.9", markers = "python_version >= \"3.6\" and python_version < \"4\""}
+shellingham = {version = "1.5.4", markers = "python_version >= \"3.7\""}
+six = {version = "1.16.0", markers = "python_version >= \"2.7\" and python_version not in \"3.0, 3.1, 3.2\""}
+sniffio = {version = "1.3.1", markers = "python_version >= \"3.7\""}
+sqlalchemy = {version = "2.0.36", markers = "python_version >= \"3.7\""}
+starlette = {version = "0.41.2", markers = "python_version >= \"3.8\""}
+tomli = {version = "2.1.0", markers = "python_version >= \"3.8\""}
+typer = {version = "0.12.5", markers = "python_version >= \"3.7\""}
+typing-extensions = {version = "4.12.2", markers = "python_version >= \"3.8\""}
+urllib3 = {version = "2.2.3", markers = "python_version >= \"3.8\""}
+uvicorn = {version = "0.32.0", markers = "python_version >= \"3.8\"", extras = ["standard"]}
+watchfiles = {version = "0.24.0", markers = "python_version >= \"3.8\""}
+websockets = {version = "13.1", markers = "python_version >= \"3.8\""}
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+pytest-mock = "^3.14.0"
+faker = "^33.1.0"
+black = "^24.10.0"
+coverage = "^7.6.9"
+ruff = "^0.8.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

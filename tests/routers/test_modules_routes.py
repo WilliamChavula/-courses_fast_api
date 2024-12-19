@@ -59,7 +59,6 @@ class TestAsyncModulesRoutes:
         module_payload_json,
         create_super_user_instance,
     ):
-
         module_ = create_module_fixture
         payload = module_payload_json
         user_ = create_super_user_instance
@@ -100,10 +99,6 @@ class TestAsyncModulesRoutes:
         user_ = create_super_user_instance
         token_ = create_access_token(data={"user": user_.email})
 
-        mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email", return_value=user_
-        )
-
         mock_update_module = mocker.patch(
             "routers.modules_routes.db_update_module", return_value=module_
         )
@@ -130,13 +125,8 @@ class TestAsyncModulesRoutes:
         create_super_user_instance,
     ):
         module_ = create_module_fixture
-        payload = module_payload_json
         user_ = create_super_user_instance
         token_ = create_access_token(data={"user": user_.email})
-
-        mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email", return_value=user_
-        )
 
         mock_get_module_by_id = mocker.patch(
             "routers.modules_routes.get_module_by_id", return_value=module_

@@ -44,7 +44,6 @@ def faker_seed():
 # noinspection PyUnresolvedReferences
 @pytest.fixture
 def authenticated_user(create_super_user_instance):
-
     from auth.authenticate import create_access_token, get_current_user
     from utils.dependencies import verify_super_user
 
@@ -101,7 +100,6 @@ def course_schema_fixture(faker, module_schema_fixture, subject_schema_fixture):
 
 @pytest.fixture
 def create_subject_fixture(faker):
-
     subject = SubjectModel(
         id=str(uuid4()), title=faker.sentence(), slug=faker.sentence(nb_words=12)
     )
@@ -111,7 +109,6 @@ def create_subject_fixture(faker):
 
 @pytest.fixture
 def create_module_fixture(faker):
-
     module = ModuleModel(
         id=str(uuid4()),
         title=faker.sentence(nb_words=6),

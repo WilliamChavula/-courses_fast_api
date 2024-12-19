@@ -105,10 +105,6 @@ class TestAsyncSubjectRoutes:
         user_ = create_super_user_instance
         token_ = create_access_token(data={"user": user_.email})
 
-        mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email", return_value=user_
-        )
-
         mock_update_subject = mocker.patch(
             "routers.subject_routes.db_update_subject", return_value=subject_
         )
@@ -135,13 +131,8 @@ class TestAsyncSubjectRoutes:
         create_subject_fixture,
     ):
         subject_ = create_subject_fixture
-        payload = subject_payload_json
         user_ = create_super_user_instance
         token_ = create_access_token(data={"user": user_.email})
-
-        mock_get_user_by_email = mocker.patch(
-            "utils.dependencies.get_user_by_email", return_value=user_
-        )
 
         mock_get_subject_by_id = mocker.patch(
             "routers.subject_routes.db_read_subject_by_id", return_value=subject_

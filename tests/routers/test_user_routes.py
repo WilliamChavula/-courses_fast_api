@@ -29,7 +29,6 @@ class TestAsyncUserRoutes:
     pytestmark = pytest.mark.anyio
 
     async def test_register_user(self):
-
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
             res = await client.post(
                 "/register",
@@ -40,7 +39,6 @@ class TestAsyncUserRoutes:
         assert res.status_code == 201
 
     async def test_unauthenticated_create_user(self):
-
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
             res = await client.post(
                 "/",
@@ -51,7 +49,6 @@ class TestAsyncUserRoutes:
         assert res.status_code == 401
 
     async def test_unauthenticated_create_many_users(self):
-
         users_payload = [user_payload_generator() for _ in range(3)]
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
@@ -65,7 +62,6 @@ class TestAsyncUserRoutes:
 
     @pytest.mark.usefixtures("authenticated_user")
     async def test_authenticated_create_user(self):
-
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
             res = await client.post(
                 "/",
@@ -77,7 +73,6 @@ class TestAsyncUserRoutes:
 
     @pytest.mark.usefixtures("authenticated_user")
     async def test_authenticated_create_many_users(self):
-
         users_payload = [user_payload_generator() for _ in range(3)]
 
         async with AsyncClient(app=app, base_url="http://localhost/user") as client:
@@ -180,7 +175,6 @@ class TestSyncUserRoutes:
         assert len(res.json()) == 3
 
     def test_get_user(self, test_client, create_user_instance, mocker: MockerFixture):
-
         user_ = create_user_instance
 
         mock_get_user_by_id = mocker.patch(

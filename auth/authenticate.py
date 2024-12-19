@@ -79,7 +79,9 @@ def logout(token: str) -> str:
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
-        expire_token = datetime.fromtimestamp(int(expire_time_string), tz=timezone.utc) - timedelta(hours=24)
+        expire_token = datetime.fromtimestamp(
+            int(expire_time_string), tz=timezone.utc
+        ) - timedelta(hours=24)
 
         payload.update({"exp": expire_token})
         encoded_jwt = jwt_provider.encode(payload=payload)
@@ -87,7 +89,7 @@ def logout(token: str) -> str:
 
     except InvalidCredentialsException:
         raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Failed to perform requested action",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to perform requested action",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

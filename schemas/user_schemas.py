@@ -4,8 +4,8 @@ from typing import Union
 
 
 class BaseUser(BaseModel):
-    first_name: str = Field(..., description='First Name')
-    last_name: str = Field(..., description='Last Name')
+    first_name: str = Field(..., description="First Name")
+    last_name: str = Field(..., description="Last Name")
     email: EmailStr
     job_title: str = Field(..., description="Job title")
     is_super_user: bool = Field(default=False, description="Is Super User")

@@ -12,7 +12,8 @@ def get_all_courses(db: Session, limit: int) -> List[CourseModel]:
         db.query(CourseModel)
         .join(SubjectModel, CourseModel.subject_id == SubjectModel.id)
         .join(ModuleModel, CourseModel.module_id == ModuleModel.id)
-        .limit(limit=limit).all()
+        .limit(limit=limit)
+        .all()
     )
 
 
@@ -32,8 +33,9 @@ def get_course_by_id(db: Session, course_id: str) -> Union[None, CourseModel]:
 
 
 async def db_create_course(db: Session, course: CourseBase) -> CourseModel:
-
-    module = ModuleModel(title=course.module.title, description=course.module.description)
+    module = ModuleModel(
+        title=course.module.title, description=course.module.description
+    )
     db.add(module)
     db.commit()
     db.refresh(module)
@@ -63,15 +65,18 @@ async def db_create_course(db: Session, course: CourseBase) -> CourseModel:
 
 async def db_insert_many(db: Session, courses: List[CourseBase]) -> List[CourseModel]:
     # noinspection PyArgumentList
-    courses_ = [CourseModel(
-        module=ModuleModel(**course.module.model_dump()),
-        subject=SubjectModel(**course.subject.model_dump()),
-        owner=course.owner,
-        title=course.title,
-        slug=course.slug,
-        overview=course.overview,
-        created=course.created,
-    ) for course in courses]
+    courses_ = [
+        CourseModel(
+            module=ModuleModel(**course.module.model_dump()),
+            subject=SubjectModel(**course.subject.model_dump()),
+            owner=course.owner,
+            title=course.title,
+            slug=course.slug,
+            overview=course.overview,
+            created=course.created,
+        )
+        for course in courses
+    ]
 
     db.add_all(courses_)
     db.commit()
@@ -79,9 +84,9 @@ async def db_insert_many(db: Session, courses: List[CourseBase]) -> List[CourseM
 
 
 def update_course_by_id(
-        db: Session,
-        course_id: str,
-        body: UpdateCourseBase,
+    db: Session,
+    course_id: str,
+    body: UpdateCourseBase,
 ) -> Union[CourseModel, None]:
     course: Union[CourseModel, None] = (
         db.query(CourseModel).filter(CourseModel.id == course_id).one_or_none()

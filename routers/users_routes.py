@@ -59,8 +59,8 @@ async def create_users(users: List[UserCreate], db: Session = Depends(get_db)):
     response_model=List[UserResponse],
 )
 def get_users(
-        db: Session = Depends(get_db),
-        limit: int = Query(10, gt=0, le=100, description="Number of records to fetch"),
+    db: Session = Depends(get_db),
+    limit: int = Query(10, gt=0, le=100, description="Number of records to fetch"),
 ):
     users = get_all_users(db, limit)
 
@@ -78,7 +78,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Could not find user matching the credentials given",
+            detail="Could not find user matching the credentials given",
         )
 
     return user
@@ -86,7 +86,7 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
 
 @user_router.post("/login", status_code=status.HTTP_200_OK, response_model=Token)
 def login(
-        req: OAuth2PasswordRequestForm = Depends(), database: Session = Depends(get_db)
+    req: OAuth2PasswordRequestForm = Depends(), database: Session = Depends(get_db)
 ) -> Token:
     user: Union[UserModel, None] = get_user_by_email(
         db=database, email_address=req.username
@@ -127,4 +127,3 @@ async def logout_user(req: Request):
     if token is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     return logout(token)
-

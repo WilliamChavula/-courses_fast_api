@@ -9,7 +9,6 @@ from tests.conf_test_db import app
 
 @pytest.mark.usefixtures("anyio_backend")
 class TestAsyncCourseRoutes:
-
     pytestmark = pytest.mark.anyio
 
     async def test_get_courses(self, create_course_fixture):
@@ -30,7 +29,6 @@ class TestAsyncCourseRoutes:
         assert res.json()["id"] == course_fixture.id
 
     async def test_create_course_with_no_token(self, course_schema_fixture):
-
         async with AsyncClient(app=app, base_url="http://localhost/courses") as ac:
             res = await ac.post("/course", json=course_schema_fixture.json())
         assert res.status_code == 401
@@ -38,7 +36,6 @@ class TestAsyncCourseRoutes:
     async def test_create_course(
         self, mocker: MockerFixture, create_super_user_instance, course_schema_fixture
     ):
-
         user_ = create_super_user_instance
 
         mock_get_user_by_email = mocker.patch(
@@ -62,7 +59,6 @@ class TestAsyncCourseRoutes:
     async def test_create_course_not_super_user(
         self, mocker, create_user_instance, course_schema_fixture
     ):
-
         user_ = create_user_instance
 
         mock_get_user_by_email = mocker.patch(
@@ -86,7 +82,6 @@ class TestSyncCourseRoutes:
     def test_update_course_not_super_user(
         self, mocker, create_user_instance, create_course_fixture, test_client
     ):
-
         original_course = create_course_fixture
         user_ = create_user_instance
 
@@ -109,7 +104,6 @@ class TestSyncCourseRoutes:
     def test_update_course_super_user(
         self, create_super_user_instance, create_course_fixture, test_client
     ):
-
         original_course = create_course_fixture
         user_ = create_super_user_instance
 
@@ -131,7 +125,6 @@ class TestSyncCourseRoutes:
     def test_delete_course_super_user(
         self, create_super_user_instance, create_course_fixture, test_client
     ):
-
         original_course = create_course_fixture
         user_ = create_super_user_instance
 

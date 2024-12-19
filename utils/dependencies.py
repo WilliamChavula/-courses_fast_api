@@ -17,9 +17,10 @@ def get_db():
         db.close()
 
 
-def verify_super_user(db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)):
-    user: UserModel = get_user_by_email(
-        db, email_address=current_user.email)
+def verify_super_user(
+    db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)
+):
+    user: UserModel = get_user_by_email(db, email_address=current_user.email)
 
     if not user:
         raise HTTPException(

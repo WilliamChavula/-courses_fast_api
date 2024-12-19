@@ -53,7 +53,6 @@ def get_subject(subject_id: str, db: Session = Depends(get_db)):
     dependencies=[Depends(verify_super_user)],
 )
 async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
-
     return await db_create_subject(db, subject)
 
 
@@ -67,7 +66,6 @@ async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
 async def update_subject(
     *, db: Session = Depends(get_db), subject_id: str, content: UpdateSubjectBase
 ):
-
     subject: Union[SubjectModel, None] = await db_update_subject(
         db, subject_id, content
     )
@@ -87,7 +85,6 @@ async def update_subject(
     dependencies=[Depends(verify_super_user)],
 )
 async def delete_module(subject_id: str, db: Session = Depends(get_db)):
-
     subject = db_read_subject_by_id(db, subject_id)
 
     if subject is None:

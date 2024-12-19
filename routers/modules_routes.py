@@ -54,7 +54,6 @@ def get_module_by_id(module_id: str, db: Session = Depends(get_db)):
     dependencies=[Depends(verify_super_user)],
 )
 async def create_module(module: ModuleBase, db: Session = Depends(get_db)):
-
     created = await db_create_module(db, module)
     return created
 
@@ -70,7 +69,6 @@ async def create_module(module: ModuleBase, db: Session = Depends(get_db)):
 async def update_module(
     *, db: Session = Depends(get_db), module_id: str, content: UpdateModuleBase
 ):
-
     module: Union[ModuleModel, None] = await db_update_module(db, module_id, content)
 
     if module is None:
@@ -88,7 +86,6 @@ async def update_module(
     dependencies=[Depends(verify_super_user)],
 )
 async def delete_module(module_id: str, db: Session = Depends(get_db)):
-
     module = get_module_by_id(module_id, db)
 
     if module is None:

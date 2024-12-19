@@ -10,10 +10,8 @@ from schemas.auth_schemas import TokenData
 
 def check_super_user(db: Session, current_user: TokenData):
     def get_user(function: Callable):
-
         def path_operation_function(*args, **kwargs):
-            user: UserModel = get_user_by_email(
-                db, email_address=current_user.email)
+            user: UserModel = get_user_by_email(db, email_address=current_user.email)
 
             if not user.is_super_user:
                 raise HTTPException(
@@ -25,6 +23,5 @@ def check_super_user(db: Session, current_user: TokenData):
             function(*args, **kwargs)
 
         return path_operation_function
+
     return get_user
-
-

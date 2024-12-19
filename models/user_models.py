@@ -7,7 +7,9 @@ from models.session import Base
 class UserModel(Base):
     __tablename__ = "user"
 
-    id = Column(String, primary_key=True, nullable=False, default=lambda: str(uuid.uuid4()))
+    id = Column(
+        String, primary_key=True, nullable=False, default=lambda: str(uuid.uuid4())
+    )
     first_name = Column(String(255), nullable=False)
     last_name = Column(String(255), nullable=False)
     email = Column(String, nullable=False)

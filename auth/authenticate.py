@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 from auth.jwt_jose_provider import JoseJWTProvider
 from auth.jwt_provider import JWTProtocol
-from core.exceptions import InvalidCredentialsException
+from core.exceptions import InvalidCredentialsError
 from core.settings import Settings
 from schemas.auth_schemas import TokenData
 
@@ -58,7 +58,7 @@ def verify_token(token: str) -> Union[TokenData, None]:
 
         token_data = TokenData(email=email)
         return token_data
-    except InvalidCredentialsException:
+    except InvalidCredentialsError:
         raise credentials_exception
 
 
@@ -87,9 +87,9 @@ def logout(token: str) -> str:
         encoded_jwt = jwt_provider.encode(payload=payload)
         return encoded_jwt
 
-    except InvalidCredentialsException:
+    except InvalidCredentialsError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to perform requested action",
             headers={"WWW-Authenticate": "Bearer"},
-        )
+        ) from exc

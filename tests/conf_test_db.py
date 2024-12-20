@@ -1,9 +1,8 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-
-from main import app, Base
+from sqlalchemy.orm import Session, sessionmaker
 
 from core.settings import Settings
+from main import Base, app
 from utils import get_db
 
 DB_NAME = "tests"

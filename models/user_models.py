@@ -1,5 +1,6 @@
 import uuid
-from sqlalchemy import Boolean, Column, DateTime, func, String
+
+from sqlalchemy import Boolean, Column, DateTime, String, func
 
 from models.session import Base
 

@@ -1,18 +1,17 @@
-from typing import List, Union
+from typing import Annotated, List, Union
 
-from fastapi import APIRouter, Depends, status, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from models.subject_models import SubjectModel
-
-from schemas import SubjectResponse, UpdateSubjectBase
 
 from crud.subjects_crud import (
+    db_create_subject,
     db_read_all_subjects,
     db_read_subject_by_id,
     db_update_subject,
-    db_create_subject,
     delete_subject_by_id,
 )
+from models.subject_models import SubjectModel
+from schemas import SubjectResponse, UpdateSubjectBase
 from schemas.subject_schemas import SubjectBase
 from utils import Tags, get_db, verify_super_user
 
@@ -25,7 +24,9 @@ subject_router = APIRouter(prefix="/subjects", tags=[Tags.subjects])
     response_model=List[SubjectResponse],
     tags=[Tags.subjects],
 )
-def get_subjects(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=100)):
+def get_subjects(
+    db: Annotated[Session, Depends(get_db)], limit: Annotated[int, Query(10, gt=0, le=100)]
+):
     return db_read_all_subjects(db, limit)
 
 
@@ -35,7 +36,7 @@ def get_subjects(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=
     response_model=SubjectResponse,
     tags=[Tags.subjects],
 )
-def get_subject(subject_id: str, db: Session = Depends(get_db)):
+def get_subject(subject_id: str, db: Annotated[Session, Depends(get_db)]):
     subject: Union[SubjectModel, None] = db_read_subject_by_id(db, subject_id)
 
     if subject is None:
@@ -52,7 +53,7 @@ def get_subject(subject_id: str, db: Session = Depends(get_db)):
     response_model=SubjectResponse,
     dependencies=[Depends(verify_super_user)],
 )
-async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
+async def create_subject(subject: SubjectBase, db: Annotated[Session, Depends(get_db)]):
     return await db_create_subject(db, subject)
 
 
@@ -64,7 +65,10 @@ async def create_subject(subject: SubjectBase, db: Session = Depends(get_db)):
     tags=[Tags.subjects],
 )
 async def update_subject(
-    *, db: Session = Depends(get_db), subject_id: str, content: UpdateSubjectBase
+    *,
+    db: Annotated[Session, Depends(get_db)],
+    subject_id: str,
+    content: UpdateSubjectBase,
 ):
     subject: Union[SubjectModel, None] = await db_update_subject(
         db, subject_id, content
@@ -84,7 +88,7 @@ async def update_subject(
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(verify_super_user)],
 )
-async def delete_module(subject_id: str, db: Session = Depends(get_db)):
+async def delete_module(subject_id: str, db: Annotated[Session, Depends(get_db)]):
     subject = db_read_subject_by_id(db, subject_id)
 
     if subject is None:

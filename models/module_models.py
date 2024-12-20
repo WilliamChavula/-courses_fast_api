@@ -19,4 +19,4 @@ class ModuleModel(Base):
     )
 
     def __repr__(self):
-        return f"<ModuleModel id={self.id}, title={self.title}, description={self.description}, course={self.course}>"
+        return f"ModuleModel(id={self.id}, title={self.title}, description={self.description}, course={self.course})"

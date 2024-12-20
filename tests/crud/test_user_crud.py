@@ -7,8 +7,8 @@ from crud.users_crud import (
     db_create_user,
     db_insert_many,
     get_all_users,
-    get_user_by_id,
     get_user_by_email,
+    get_user_by_id,
 )
 from models.user_models import UserModel
 from schemas.user_schemas import UserCreate

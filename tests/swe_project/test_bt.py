@@ -1,18 +1,17 @@
 import datetime
 import json
-import pytest
 
+import pytest
 from faker import Faker
 from fastapi import status
-from auth.authenticate import create_access_token
-from crud.users_crud import db_create_user
-from schemas.user_schemas import UserCreate
-from models.user_models import UserModel
-
 from pydantic import ValidationError
 from pytest_mock import MockerFixture
 from sqlalchemy.exc import DataError
 
+from auth.authenticate import create_access_token
+from crud.users_crud import db_create_user
+from models.user_models import UserModel
+from schemas.user_schemas import UserCreate
 from tests.conf_test_db import override_get_db
 
 fake = Faker()

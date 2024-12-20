@@ -1,11 +1,16 @@
-from typing import Dict, Any
-from jose import jwt, JWTError
+"""JWT Jose Provider module."""
+
+from typing import Any, Dict
+
+from jose import JWTError, jwt
 
 from auth.jwt_provider import JWTProtocol
-from core.exceptions import InvalidCredentialsException
+from core.exceptions import InvalidCredentialsError
 
 
 class JoseJWTProvider(JWTProtocol):
+    """JoseJWTProvider class to encode and decode JWT tokens using JOSE library."""
+
     def __init__(self, algorithm: str, secret_key: str) -> None:
         self.algorithm = algorithm
         self.secret_key = secret_key
@@ -17,5 +22,5 @@ class JoseJWTProvider(JWTProtocol):
         try:
             return jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
 
-        except JWTError:
-            raise InvalidCredentialsException()
+        except JWTError as exc:
+            raise InvalidCredentialsError() from exc

@@ -1,6 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field
 from typing import Union
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 class BaseUser(BaseModel):

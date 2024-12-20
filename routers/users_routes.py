@@ -1,23 +1,22 @@
-from typing import List, Union
+from typing import Annotated, List, Union
 
-from fastapi import APIRouter, Depends, Request, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
+from auth.authenticate import create_access_token, logout
+from auth.hashing import verify_password
 from crud.users_crud import (
     db_create_user,
     db_insert_many,
     get_all_users,
-    get_user_by_id,
     get_user_by_email,
+    get_user_by_id,
     user_registration,
 )
 from models.user_models import UserModel
 from schemas.auth_schemas import Token
 from schemas.user_schemas import UserCreate, UserResponse
-
-from auth.authenticate import create_access_token, logout
-from auth.hashing import verify_password
 from utils import Tags, get_db, verify_super_user
 
 user_router = APIRouter(prefix="/user", tags=[Tags.users])
@@ -30,7 +29,7 @@ user_router = APIRouter(prefix="/user", tags=[Tags.users])
     summary="Create a user",
     dependencies=[Depends(verify_super_user)],
 )
-async def create_user(user: UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: UserCreate, db: Annotated[Session, Depends(get_db)]):
     user_exists = get_user_by_email(db, user.email)
 
     if user_exists is not None:
@@ -48,7 +47,9 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
     summary="Create users by passing a json Array of user objects",
     dependencies=[Depends(verify_super_user)],
 )
-async def create_users(users: List[UserCreate], db: Session = Depends(get_db)):
+async def create_users(
+    users: List[UserCreate], db: Annotated[Session, Depends(get_db)]
+):
     res: List[UserModel] = await db_insert_many(db, users)
     return res
 
@@ -59,8 +60,8 @@ async def create_users(users: List[UserCreate], db: Session = Depends(get_db)):
     response_model=List[UserResponse],
 )
 def get_users(
-    db: Session = Depends(get_db),
-    limit: int = Query(10, gt=0, le=100, description="Number of records to fetch"),
+    db: Annotated[Session, Depends(get_db)],
+    limit: Annotated[int, Query(10, gt=0, le=100, description="Number of records to fetch")],
 ):
     users = get_all_users(db, limit)
 
@@ -72,7 +73,7 @@ def get_users(
     status_code=status.HTTP_200_OK,
     response_model=UserResponse,
 )
-def get_user(user_id: str, db: Session = Depends(get_db)):
+def get_user(user_id: str, db: Annotated[Session, Depends(get_db)]):
     user: Union[None, UserResponse] = get_user_by_id(db=db, user_id=user_id)
 
     if user is None:
@@ -84,9 +85,10 @@ def get_user(user_id: str, db: Session = Depends(get_db)):
     return user
 
 
-@user_router.post("/login", status_code=status.HTTP_200_OK, response_model=Token)
+@user_router.post("/login", status_code=status.HTTP_200_OK)
 def login(
-    req: OAuth2PasswordRequestForm = Depends(), database: Session = Depends(get_db)
+    database: Annotated[Session, Depends(get_db)],
+    req: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     user: Union[UserModel, None] = get_user_by_email(
         db=database, email_address=req.username
@@ -108,7 +110,7 @@ def login(
 
 
 @user_router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register_user(req: UserCreate, database: Session = Depends(get_db)):
+async def register_user(req: UserCreate, database: Annotated[Session, Depends(get_db)]):
     user = get_user_by_email(database, req.email)
     if user:
         raise HTTPException(

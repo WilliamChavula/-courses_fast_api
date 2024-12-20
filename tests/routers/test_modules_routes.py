@@ -1,13 +1,13 @@
 import json
 from uuid import uuid4
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from pytest_mock import MockerFixture
 from sqlalchemy.orm import Session
 
-from schemas import ModuleBase, UpdateModuleBase
 from auth.authenticate import create_access_token
+from schemas import ModuleBase, UpdateModuleBase
 from tests.conf_test_db import app
 
 

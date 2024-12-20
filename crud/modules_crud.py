@@ -1,9 +1,10 @@
-from typing import Union, List
+from typing import List, Union
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from schemas import ModuleBase, UpdateModuleBase
 from models import ModuleModel
+from schemas import ModuleBase, UpdateModuleBase
 
 
 async def db_create_module(db: Session, mod: ModuleBase):

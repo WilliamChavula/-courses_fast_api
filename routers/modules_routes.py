@@ -1,12 +1,13 @@
-from typing import List, Union
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from typing import Annotated, List, Union
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from crud.modules_crud import (
+    db_create_module,
     db_read_all_modules,
     db_read_module_by_id,
     db_update_module,
-    db_create_module,
     delete_module_by_id,
 )
 from models.module_models import ModuleModel
@@ -24,7 +25,9 @@ module_router = APIRouter(prefix="/modules", tags=[Tags.modules])
     tags=[Tags.modules],
     summary="Query Course modules",
 )
-def get_modules(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=100)):
+def get_modules(
+    db: Annotated[Session, Depends(get_db)], limit: Annotated[int, Query(10, gt=0, le=100)]
+):
     return db_read_all_modules(db, limit)
 
 
@@ -35,7 +38,7 @@ def get_modules(db: Session = Depends(get_db), limit: int = Query(10, gt=0, le=1
     tags=[Tags.modules],
     summary="Query Course module by ID",
 )
-def get_module_by_id(module_id: str, db: Session = Depends(get_db)):
+def get_module_by_id(module_id: str, db: Annotated[Session, Depends(get_db)]):
     module: Union[ModuleModel, None] = db_read_module_by_id(db=db, module_id=module_id)
 
     if module is None:
@@ -53,7 +56,7 @@ def get_module_by_id(module_id: str, db: Session = Depends(get_db)):
     response_model=ModuleResponse,
     dependencies=[Depends(verify_super_user)],
 )
-async def create_module(module: ModuleBase, db: Session = Depends(get_db)):
+async def create_module(module: ModuleBase, db: Annotated[Session, Depends(get_db)]):
     created = await db_create_module(db, module)
     return created
 
@@ -67,7 +70,10 @@ async def create_module(module: ModuleBase, db: Session = Depends(get_db)):
     summary="Update Course module by ID",
 )
 async def update_module(
-    *, db: Session = Depends(get_db), module_id: str, content: UpdateModuleBase
+    *,
+    db: Annotated[Session, Depends(get_db)],
+    module_id: str,
+    content: UpdateModuleBase,
 ):
     module: Union[ModuleModel, None] = await db_update_module(db, module_id, content)
 
@@ -85,7 +91,7 @@ async def update_module(
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(verify_super_user)],
 )
-async def delete_module(module_id: str, db: Session = Depends(get_db)):
+async def delete_module(module_id: str, db: Annotated[Session, Depends(get_db)]):
     module = get_module_by_id(module_id, db)
 
     if module is None:

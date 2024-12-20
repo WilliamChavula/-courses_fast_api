@@ -2,15 +2,13 @@ import datetime
 import json
 
 import pytest
-
 from faker import Faker
-from fastapi import status, HTTPException
+from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 import crud.users_crud
 import routers
-
-from auth.authenticate import jwt_provider, create_access_token
+from auth.authenticate import create_access_token, jwt_provider
 from routers.users_routes import login
 from schemas.auth_schemas import Token
 from tests.conf_test_db import override_get_db

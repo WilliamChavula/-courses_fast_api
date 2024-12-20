@@ -1,24 +1,20 @@
-from uuid import uuid4
 from datetime import datetime
 from random import randint
+from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import delete
 
 from auth.hashing import get_password_hash
-
 from models.course_models import CourseModel
 from models.module_models import ModuleModel
 from models.subject_models import SubjectModel
-
+from models.user_models import UserModel
 from schemas.course_schemas import CourseBase
 from schemas.module_schemas import ModuleBase
 from schemas.subject_schemas import SubjectBase
-
-from models.user_models import UserModel
-
-from tests.conf_test_db import override_get_db, app
+from tests.conf_test_db import app, override_get_db
 
 
 @pytest.fixture(scope="class")
@@ -49,8 +45,8 @@ def authenticated_user(create_super_user_instance):
 
     user_ = create_super_user_instance
 
-    from utils import get_db
     from tests.conf_test_db import override_get_db
+    from utils import get_db
 
     token_ = create_access_token(data={"user": user_.email})
     token_data = get_current_user(token_)

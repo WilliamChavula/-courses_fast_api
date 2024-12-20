@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import courses_router, subject_router, module_router, user_router
-from models.session import engine, Base
+from models.session import Base, engine
+from routers import courses_router, module_router, subject_router, user_router
 
 origins = [
     "http://localhost",

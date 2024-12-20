@@ -7,8 +7,9 @@ from tests.conf_test_db import app
 
 
 def user_payload_generator() -> Dict[str, str]:
-    from faker import Faker
     from random import randint
+
+    from faker import Faker
 
     Faker.seed(randint(100000, 1000000))
 

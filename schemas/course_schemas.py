@@ -1,15 +1,18 @@
-from uuid import UUID
-from datetime import datetime
+"""The module contains the schemas for the course model."""
 
+from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from .module_schemas import ModuleBase, UpdateModuleBase, ModuleResponse
-from .subject_schemas import SubjectBase, UpdateSubjectBase, SubjectResponse
+from .module_schemas import ModuleBase, ModuleResponse, UpdateModuleBase
+from .subject_schemas import SubjectBase, SubjectResponse, UpdateSubjectBase
 
 
 class CourseBase(BaseModel):
+    """CourseBase schema class."""
+
     module: ModuleBase
     owner: str
     subject: SubjectBase
@@ -20,15 +23,21 @@ class CourseBase(BaseModel):
 
 
 class CourseResponse(CourseBase):
+    """CourseResponse schema class."""
+
     id: UUID
     module: ModuleResponse
     subject: SubjectResponse
 
     class Config:
+        """Config schema class."""
+
         orm_mode = True
 
 
 class UpdateCourseBase(CourseBase):
+    """UpdateCourseBase schema class."""
+
     module: Optional[UpdateModuleBase] = None
     owner: Optional[str] = None
     subject: Optional[UpdateSubjectBase] = None
@@ -38,4 +47,6 @@ class UpdateCourseBase(CourseBase):
     created: Optional[datetime] = None
 
     class Config:
+        """Config schema class."""
+
         orm_mode = True

@@ -1,8 +1,8 @@
 import asyncio
 import json
-import pytest
 from uuid import uuid4
 
+import pytest
 from faker import Faker
 from fastapi import status
 from httpx import AsyncClient

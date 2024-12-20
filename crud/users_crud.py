@@ -1,5 +1,6 @@
 import asyncio
-from typing import Union, List, Sequence
+from typing import List, Sequence, Union
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 

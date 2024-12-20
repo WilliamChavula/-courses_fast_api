@@ -1,6 +1,7 @@
 from typing import List, Union
-from sqlalchemy.orm import Session
+
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from models import SubjectModel
 from schemas import SubjectBase, UpdateSubjectBase

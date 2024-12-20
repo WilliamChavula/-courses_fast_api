@@ -1,9 +1,8 @@
 import pytest
-from pytest_mock import MockerFixture
 from httpx import AsyncClient
+from pytest_mock import MockerFixture
 
 from auth.authenticate import create_access_token
-
 from tests.conf_test_db import app
 
 
